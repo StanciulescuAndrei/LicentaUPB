@@ -3,7 +3,7 @@ import torchvision.transforms.functional as F
 import sys
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES']='0,1,2'
+os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 from ModelBuilder.ResNet152_DeepLab import ResNet152DeepLab
 from ModelBuilder.AlexNet_DeepLab import AlexNetDeepLab
@@ -28,10 +28,10 @@ path = 'liver-database/'
 save_path = 'models/'
 
 dataset_learn = LiverDataset(path + 'training/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=36, shuffle=True, num_workers=32, pin_memory=True)
+dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=32, shuffle=True, num_workers=32, pin_memory=True)
 
 dataset_test = LiverDataset(path + 'testing/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=36, shuffle=True, num_workers=32, pin_memory=True)
+dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=32, shuffle=True, num_workers=32, pin_memory=True)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -39,8 +39,6 @@ model_name = 'ResNet152'
 model = ResNet152DeepLab()
 for param in model.parameters():
     param.requires_grad = True
-
-model = nn.DataParallel(model)
 
 optimizer = optim.SGD([
     {'params': model.parameters()}
