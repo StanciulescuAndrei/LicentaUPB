@@ -37,8 +37,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 model_name = 'ResNet152'
 model = ResNet152DeepLab()
-for param in model.parameters():
-    param.requires_grad = True
+model.to(device)
 
 optimizer = optim.SGD([
     {'params': model.parameters()}
@@ -46,7 +45,9 @@ optimizer = optim.SGD([
 sched = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.93)
 loss_fcn = nn.BCEWithLogitsLoss().to(device)
 
-if True:
+if False:
+    for param in model.parameters():
+        param.requires_grad = True
     torch.save(model, save_path + 'ResNet152_0.pt')
     epoch = 1
 else:
@@ -55,9 +56,6 @@ else:
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
     sched.load_state_dict(checkpoint['scheduler_state_dict'])
     epoch = checkpoint['epoch']
-
-torch.cuda.empty_cache()
-model = model.to(device)
 
 while epoch < 201:
     print(f"Epoch {epoch}\n-------------------------------")
