@@ -19,7 +19,8 @@ class DiceLoss(nn.Module):
         inputs = inputs.view(-1)
         targets = targets.view(-1)
         
-        intersection = (inputs * targets).sum()                            
-        dice = (2.*intersection + smooth)/(inputs.sum() + targets.sum() + smooth)  
+        intersection = (inputs * targets).sum()
+        total_cardinality = inputs.sum() + targets.sum()
+        dice = (2.*intersection + smooth)/(total_cardinality + smooth)
         
         return 1 - dice
