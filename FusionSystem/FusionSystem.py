@@ -17,4 +17,4 @@ class FusionSystem(nn.Module):
         assert x.size()[1] == self.num_sources, "Incorrect number of segmentation channels"
         for i in range(self.num_sources):
             out[:, :, :] += self.weights[i] * x[:, i, :, :]
-        return torch.round(self.activation(out))
+        return out

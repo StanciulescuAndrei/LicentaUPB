@@ -26,7 +26,7 @@ class SegDataset(Dataset):
             print(model)
             seg_stack[stack, :, :] = np.fromfile(self.segmentations[model][idx], bool).squeeze().reshape([512, 512]).astype(np.float32)
             stack = stack + 1
-        stack = torch.tensor(stack)
+        seg_stack = torch.tensor(seg_stack)
 
         mask_path = self.mask_files[idx]
         label = np.fromfile(mask_path, np.float16)
