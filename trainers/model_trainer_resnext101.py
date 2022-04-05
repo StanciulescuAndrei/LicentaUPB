@@ -3,7 +3,7 @@ import torchvision.transforms.functional as F
 import sys
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES']='1'
+os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 from ModelBuilder.ResNet152_DeepLab import ResNet152DeepLab
 from ModelBuilder.AlexNet_DeepLab import AlexNetDeepLab
@@ -45,7 +45,7 @@ optimizer = optim.SGD([
 sched = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.93)
 loss_fcn = nn.BCEWithLogitsLoss().to(device)
 
-if False:
+if True:
     for param in model.parameters():
         param.requires_grad = True
     torch.save(model, save_path + 'ResNeXt101_0.pt')

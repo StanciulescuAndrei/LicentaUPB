@@ -3,7 +3,7 @@ import torchvision.transforms.functional as F
 import sys
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES']='1'
+os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 from ModelBuilder.ConvNeXt_DeepLab import ConvNeXtDeepLab
 
@@ -32,7 +32,7 @@ dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=32, shuff
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-model_name = 'ConvNeXt'
+model_name = 'ConvNeXt_mod'
 model = ConvNeXtDeepLab()
 model = model.to(device)
 
@@ -45,7 +45,7 @@ loss_fcn = nn.BCEWithLogitsLoss().to(device)
 if True:
     for param in model.parameters():
         param.requires_grad = True
-    torch.save(model, save_path + 'ConvNeXt_0.pt')
+    torch.save(model, save_path + 'ConvNeXt_mod_0.pt')
     epoch = 1
 else:
     checkpoint = torch.load(save_path + model_name + '_checkpoint.pt')
