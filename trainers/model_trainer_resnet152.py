@@ -6,9 +6,6 @@ import os
 os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 from ModelBuilder.ResNet152_DeepLab import ResNet152DeepLab
-from ModelBuilder.AlexNet_DeepLab import AlexNetDeepLab
-from ModelBuilder.ResNeXt101_DeepLab import ResNeXt101DeepLab
-from ModelBuilder.ClassifierHead import DeepLabHead
 
 from utils.function_lib import *
 from utils.LiverDataset import *
@@ -45,7 +42,7 @@ optimizer = optim.SGD([
 sched = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.93)
 loss_fcn = nn.BCEWithLogitsLoss().to(device)
 
-if False:
+if True:
     for param in model.parameters():
         param.requires_grad = True
     torch.save(model, save_path + 'ResNet152_0.pt')

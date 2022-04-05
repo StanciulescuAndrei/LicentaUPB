@@ -5,10 +5,7 @@ import os
 
 os.environ['CUDA_VISIBLE_DEVICES']='0'
 
-from ModelBuilder.ResNet152_DeepLab import ResNet152DeepLab
-from ModelBuilder.AlexNet_DeepLab import AlexNetDeepLab
 from ModelBuilder.ResNeXt101_DeepLab import ResNeXt101DeepLab
-from ModelBuilder.ClassifierHead import DeepLabHead
 
 from utils.function_lib import *
 from utils.LiverDataset import *
