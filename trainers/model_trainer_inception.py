@@ -1,12 +1,9 @@
 from torch.utils.data import Dataset
-import torchvision.transforms.functional as F
-import sys
 import os
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
-from ModelBuilder.InceptionV3_DeepLab import InceptionV3DeepLab
-from ModelBuilder.ClassifierHead import DeepLabHead
+from ModelBuilder.Inception.InceptionV3_DeepLab import InceptionV3DeepLab
 
 from utils.function_lib import *
 from utils.LiverDataset import *
