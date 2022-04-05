@@ -1,11 +1,9 @@
 from torch.utils.data import Dataset
-import torchvision.transforms.functional as F
-import sys
 import os
 
 os.environ['CUDA_VISIBLE_DEVICES']='0'
 
-from ModelBuilder.ConvNeXt_DeepLab import ConvNeXtDeepLab
+from ModelBuilder.ConvNeXt.ConvNeXt_DeepLab import ConvNeXtDeepLab
 
 from utils.function_lib import *
 from utils.LiverDataset import *
