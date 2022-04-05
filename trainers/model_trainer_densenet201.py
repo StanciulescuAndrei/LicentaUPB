@@ -1,12 +1,9 @@
 from torch.utils.data import Dataset
-import torchvision.transforms.functional as F
-import sys
 import os
 
 os.environ['CUDA_VISIBLE_DEVICES']='0'
 
-from ModelBuilder.DenseNet201_DeepLab import DenseNet201DeepLab
-from ModelBuilder.ClassifierHead import DeepLabHead
+from ModelBuilder.DenseNet.DenseNet201_DeepLab import DenseNet201DeepLab
 
 from utils.function_lib import *
 from utils.LiverDataset import *

@@ -1,19 +1,11 @@
 from torch.utils.data import Dataset
 import torchvision.transforms.functional as F
-import torch
-import os
 from tqdm import tqdm
 
-from utils.function_lib import *
 from utils.LiverDataset import *
 from utils.DiceLoss import *
 
-from ModelBuilder.ResNet152_DeepLab import ResNet152DeepLab
 from ModelBuilder.ResNeXt101_DeepLab import ResNeXt101DeepLab
-from ModelBuilder.DenseNet201_DeepLab import DenseNet201DeepLab
-from ModelBuilder.InceptionV3_DeepLab import InceptionV3DeepLab
-from ModelBuilder.ConvNeXt_DeepLab import ConvNeXtDeepLab
-from ModelBuilder.ClassifierHead import DeepLabHead
 
 transform_image = transforms.Compose(
     [
