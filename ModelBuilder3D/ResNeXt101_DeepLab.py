@@ -13,7 +13,6 @@ class ResNeXt101DeepLab(nn.Module):
 
         layers = {'layer4': 'out'}
         model_fe = torchvision.models.resnext101_32x8d(pretrained=True, replace_stride_with_dilation=[False, True, True])
-        model_fe.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
         self.FeatureExtractor = IntermediateLayerGetter(model_fe, layers)
         self.Classifier = DeepLabHead(2048, 1, [4, 8, 12])
 

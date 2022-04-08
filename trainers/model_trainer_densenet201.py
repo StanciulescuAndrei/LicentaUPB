@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES']='0'
+os.environ['CUDA_VISIBLE_DEVICES']='1'
 
 from ModelBuilder.DenseNet.DenseNet201_DeepLab import DenseNet201DeepLab
 
@@ -40,7 +40,7 @@ optimizer = optim.SGD([
 sched = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.93)
 loss_fcn = nn.BCEWithLogitsLoss().to(device)
 
-if True:
+if False:
     for param in model.parameters():
         param.requires_grad = True
     torch.save(model, save_path + 'DenseNet201_0.pt')

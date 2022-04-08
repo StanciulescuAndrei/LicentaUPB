@@ -21,7 +21,6 @@ class DenseNet201DeepLab(nn.Module):
     def forward(self, x):
         input_shape = x.shape[-2:]
         feature_maps = self.FeatureExtractor(x)['out']
-        print(feature_maps.size())
         output = self.Classifier.forward(feature_maps)
         output = F.interpolate(output, size=input_shape, mode="bilinear", align_corners=False)
         return output

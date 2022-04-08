@@ -3,17 +3,17 @@ import torch
 import torchvision.models
 
 from ModelBuilder.ClassifierHead import DeepLabHead
+from ModelBuilder.Inception.InceptionV3 import Inception3
 from torch.nn import functional as F
 from torchvision.models._utils import IntermediateLayerGetter
 
 
-class ResNeXt101DeepLab(nn.Module):
+class InceptionV3DeepLab(nn.Module):
     def __init__(self):
-        super(ResNeXt101DeepLab, self).__init__()
+        super(InceptionV3DeepLab, self).__init__()
 
-        layers = {'layer4': 'out'}
-        model_fe = torchvision.models.resnext101_32x8d(pretrained=True, replace_stride_with_dilation=[False, True, True])
-        model_fe.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        layers = {'Mixed_7c': 'out'}
+        model_fe = Inception3(transform_input=False, aux_logits=False)
         self.FeatureExtractor = IntermediateLayerGetter(model_fe, layers)
         self.Classifier = DeepLabHead(2048, 1, [4, 8, 12])
 

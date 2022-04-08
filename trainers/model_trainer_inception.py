@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 
 from ModelBuilder.Inception.InceptionV3_DeepLab import InceptionV3DeepLab
 
@@ -11,17 +11,11 @@ from utils.DiceLoss import *
 
 transform_image = transforms.Compose(
     [
-        transforms.ToPILImage(),
-        transforms.Resize(300, interpolation=torchvision.transforms.InterpolationMode.BILINEAR, antialias=True),
-        transforms.CenterCrop(300),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.2], std=[0.2])
     ])
 transform_mask = transforms.Compose(
     [
-        transforms.ToPILImage(),
-        transforms.Resize(300, interpolation=torchvision.transforms.InterpolationMode.NEAREST),
-        transforms.CenterCrop(300),
         transforms.ToTensor()
     ])
 
@@ -29,11 +23,11 @@ path = 'liver-database/'
 save_path = 'models/'
 
 dataset_learn = LiverDataset(path + 'training/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=64, shuffle=True, num_workers=32,
+dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=32, shuffle=True, num_workers=32,
                                                pin_memory=True)
 
 dataset_test = LiverDataset(path + 'testing/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=64, shuffle=True, num_workers=32,
+dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=32, shuffle=True, num_workers=32,
                                               pin_memory=True)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -48,7 +42,7 @@ optimizer = optim.SGD([
 sched = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.93)
 loss_fcn = nn.BCEWithLogitsLoss().to(device)
 
-if True:
+if False:
     for param in model.parameters():
         param.requires_grad = True
     torch.save(model, save_path + 'Inception_0.pt')

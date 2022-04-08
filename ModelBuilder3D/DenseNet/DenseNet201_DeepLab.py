@@ -3,19 +3,19 @@ import torch
 import torchvision.models
 
 from ModelBuilder.ClassifierHead import DeepLabHead
+from ModelBuilder.DenseNet.DenseNet import DenseNet
 from torch.nn import functional as F
 from torchvision.models._utils import IntermediateLayerGetter
 
 
-class ResNeXt101DeepLab(nn.Module):
+class DenseNet201DeepLab(nn.Module):
     def __init__(self):
-        super(ResNeXt101DeepLab, self).__init__()
+        super(DenseNet201DeepLab, self).__init__()
 
-        layers = {'layer4': 'out'}
-        model_fe = torchvision.models.resnext101_32x8d(pretrained=True, replace_stride_with_dilation=[False, True, True])
-        model_fe.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        layers = {'features': 'out'}
+        model_fe = DenseNet(32, (6, 12, 48, 32), 64)
         self.FeatureExtractor = IntermediateLayerGetter(model_fe, layers)
-        self.Classifier = DeepLabHead(2048, 1, [4, 8, 12])
+        self.Classifier = DeepLabHead(1920, 1, [4, 8, 12])
 
     def forward(self, x):
         input_shape = x.shape[-2:]

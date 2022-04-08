@@ -63,22 +63,41 @@ def deprocess_img(image, mask, out_size):
     return image, mask
     
 
-def show(imgs):
-    if not isinstance(imgs, list):
-        imgs = [imgs]
-    fix, axs = plt.subplots(ncols=min(len(imgs), 4), nrows=(len(imgs)-1)//4+1, squeeze=False)
-    for i, img in enumerate(imgs):
-        img = img.detach()
-        img = F.to_pil_image(img)
-        axs[i//4, i %4].imshow(np.asarray(img))
-        axs[i//4, i %4].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
+def show_model_seg(model, dataset, idx):
+    model.eval()
+    input_tensor, mask = dataset.__getitem__(idx)
+    input_batch = input_tensor.repeat(2, 1, 1, 1)
+    pred = model(input_batch)
 
+    final_func = nn.Sigmoid()
+    pred = final_func(pred).squeeze()
+    pred = torch.nn.functional.interpolate(pred.unsqueeze(0), size=512, mode="bilinear", align_corners=False).squeeze()
+    output_predictions = torch.round(pred[0])
 
-def show_cpu(imgs):
-    if not isinstance(imgs, list):
-        imgs = [imgs]
-    fix, axs = plt.subplots(ncols=min(len(imgs), 4), nrows=(len(imgs)-1)//4+1, squeeze=False)
-    for i, img in enumerate(imgs):
-        img = F.to_pil_image(img)
-        axs[i//4, i %4].imshow(np.asarray(img))
-        axs[i//4, i %4].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
+    print(output_predictions.shape)
+    output_predictions = output_predictions.detach().squeeze()
+    output_predictions = np.round(output_predictions)
+    mask = mask.cpu().squeeze()
+
+    palette = torch.tensor([2 ** 25 - 1, 2 ** 15 - 1, 2 ** 21 - 1])
+    colors = torch.as_tensor([i for i in range(3)])[:, None] * 1.1 * palette
+    colors = (colors % 255).numpy().astype("uint8")
+    r = Image.fromarray(output_predictions.byte().cpu().numpy())
+    r.putpalette(colors)
+
+    r_mask = Image.fromarray(mask.byte().cpu().numpy())
+    r_mask.putpalette(colors)
+
+    print(torch.max(output_predictions))
+    plt.figure()
+    plt.subplot(1, 3, 1)
+    plt.imshow(r)
+    plt.subplot(1, 3, 2)
+    plt.imshow(r_mask)
+    plt.subplot(1, 3, 3)
+    if input_tensor.size()[0] > 1:
+        plt.imshow(np.squeeze(input_tensor[1, :, :].numpy()))
+    else:
+        plt.imshow(np.squeeze(input_tensor.numpy()))
+    plt.show()
+
