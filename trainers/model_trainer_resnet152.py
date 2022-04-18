@@ -45,7 +45,7 @@ loss_fcn = nn.BCEWithLogitsLoss().to(device)
 if False:
     for param in model.parameters():
         param.requires_grad = True
-    torch.save(model, save_path + 'ConvNeXt_mod_0.pt')
+    torch.save(model, save_path + 'ResNet152_0.pt')
     epoch = 1
 else:
     checkpoint = torch.load(save_path + model_name + '_checkpoint.pt')

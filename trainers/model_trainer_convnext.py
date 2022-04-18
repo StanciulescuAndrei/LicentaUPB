@@ -23,10 +23,10 @@ path = 'liver-database/'
 save_path = 'models/'
 
 dataset_learn = LiverDataset(path + 'training/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=32, shuffle=True, num_workers=32, pin_memory=True)
+dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=16, shuffle=True, num_workers=32, pin_memory=True)
 
 dataset_test = LiverDataset(path + 'testing/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=32, shuffle=True, num_workers=32, pin_memory=True)
+dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=16, shuffle=True, num_workers=32, pin_memory=True)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
