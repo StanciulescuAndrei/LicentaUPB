@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Anul 4 - Sem 2/PSA/Lab 6/.idea/Lab 6.iml" filepath="$PROJECT_DIR$/../../Anul 4 - Sem 2/PSA/Lab 6/.idea/Lab 6.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/PytorchMLImplementation.iml" filepath="$PROJECT_DIR$/.idea/PytorchMLImplementation.iml" />
+      <module fileurl="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa15348.14745/.idea/Rar$DIa15348.14745.iml" filepath="$USER_HOME$/AppData/Local/Temp/Rar$DIa15348.14745/.idea/Rar$DIa15348.14745.iml" />
+      <module fileurl="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa15348.17181/.idea/Rar$DIa15348.17181.iml" filepath="$USER_HOME$/AppData/Local/Temp/Rar$DIa15348.17181/.idea/Rar$DIa15348.17181.iml" />
+      <module fileurl="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa15348.21408/.idea/Rar$DIa15348.21408.iml" filepath="$USER_HOME$/AppData/Local/Temp/Rar$DIa15348.21408/.idea/Rar$DIa15348.21408.iml" />
     </modules>
   </component>
 </project>
