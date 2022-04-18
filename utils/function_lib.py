@@ -57,7 +57,6 @@ def deprocess_img(image, mask, out_size):
         transforms.Resize(out_size, transforms.InterpolationMode.NEAREST)
     ])
     image = trans_image(image)
-    image = image * 0.2 + 0.2
     
     mask = trans_mask(mask)
     return image, mask
@@ -67,6 +66,7 @@ def show_model_seg(model, dataset, idx):
     model.eval()
     input_tensor, mask = dataset.__getitem__(idx)
     input_batch = input_tensor.repeat(2, 1, 1, 1)
+    # input_batch = input_tensor
     pred = model(input_batch)
 
     final_func = nn.Sigmoid()

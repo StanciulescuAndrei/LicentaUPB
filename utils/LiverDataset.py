@@ -45,6 +45,7 @@ class LiverDataset(Dataset):
 
         return input_image, label
 
+
 class LiverDataset3D(Dataset):
     """Liver segmentation dataset."""
 
