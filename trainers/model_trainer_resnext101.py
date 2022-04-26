@@ -16,7 +16,7 @@ from utils.DiceLoss import *
 transform_image = transforms.Compose(
     [
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.2], std=[0.2])
+        transforms.Normalize(mean=[0.5], std=[0.5])
     ])
 transform_mask = transforms.Compose(
     [
