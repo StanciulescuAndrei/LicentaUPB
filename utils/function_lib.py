@@ -89,7 +89,7 @@ def show_model_seg(model, dataset, idx):
     r_mask.putpalette(colors)
 
     print(torch.max(output_predictions))
-    plt.figure()
+    plt.figure(figsize = (12, 6))
     plt.subplot(1, 3, 1)
     plt.imshow(r)
     plt.subplot(1, 3, 2)
