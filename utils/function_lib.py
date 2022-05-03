@@ -96,8 +96,8 @@ def show_model_seg(model, dataset, idx):
     plt.imshow(r_mask)
     plt.subplot(1, 3, 3)
     if input_tensor.size()[0] > 1:
-        plt.imshow(np.squeeze(input_tensor[1, :, :].numpy()))
+        plt.imshow(1 - np.squeeze(input_tensor[1, :, :].numpy()), cmap='Greys')
     else:
-        plt.imshow(np.squeeze(input_tensor.numpy()))
+        plt.imshow(1 - np.squeeze(input_tensor.numpy()), cmap='Greys')
     plt.show()
 
