@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 # Incarcare imagini presegmentate
-seg_folder = 'G:/MachineLearning/liver-database/outputs/'
-models = ['DenseNet201', 'Inception', 'ResNet152', 'ResNeXt101']
-seg = np.zeros((4, 4776, 512, 512), dtype=bool)
+seg_folder = 'G:/MachineLearning/liver-database/validation/processed/'
+models = ['DenseNet201', 'Inception', 'ResNet152', 'ResNeXt101', 'Fusion']
+# seg = np.zeros((5, 4776, 512, 512), dtype=bool)
 for i in range(len(models)):
     full_path = seg_folder + models[i]
 

@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0,1'
 
 from ModelBuilder.Inception.InceptionV3_DeepLab import InceptionV3DeepLab
 
@@ -19,15 +19,15 @@ transform_mask = transforms.Compose(
         transforms.ToTensor()
     ])
 
-path = 'liver-database/'
+path = 'lesion-database/'
 save_path = 'models/'
 
 dataset_learn = LiverDataset(path + 'training/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=32, shuffle=True, num_workers=32,
+dataloader_learn = torch.utils.data.DataLoader(dataset_learn, batch_size=16, shuffle=True, num_workers=16,
                                                pin_memory=True)
 
 dataset_test = LiverDataset(path + 'testing/', transform_image=transform_image, transform_mask=transform_mask)
-dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=32, shuffle=True, num_workers=32,
+dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=16, shuffle=True, num_workers=16,
                                               pin_memory=True)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -42,7 +42,7 @@ optimizer = optim.SGD([
 sched = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.93)
 loss_fcn = nn.BCEWithLogitsLoss().to(device)
 
-if False:
+if True:
     for param in model.parameters():
         param.requires_grad = True
     torch.save(model, save_path + 'Inception_0.pt')
@@ -54,11 +54,13 @@ else:
     sched.load_state_dict(checkpoint['scheduler_state_dict'])
     epoch = checkpoint['epoch']
 
-while epoch < 201:
+model = nn.DataParallel(model)
+
+while epoch < 101:
     print(f"Epoch {epoch}\n-------------------------------")
 
     train_loop(dataloader_learn, model, loss_fcn, optimizer, sched, device)
-    validation_loss = test_loop(dataloader_learn, model, loss_fcn, device)
+    validation_loss = test_loop(dataloader_test, model, loss_fcn, device)
     sched.step()
 
     if epoch % 10 == 0:
@@ -66,7 +68,7 @@ while epoch < 201:
 
     torch.save({
         'epoch': epoch,
-        'model_state_dict': model.state_dict(),
+        'model_state_dict': model.module.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
         'scheduler_state_dict': sched.state_dict()
     }, save_path + model_name + '_checkpoint.pt')
