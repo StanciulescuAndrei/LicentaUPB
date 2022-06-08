@@ -11,6 +11,7 @@ import torchvision.transforms.functional as F
 import numpy as np
 import nibabel as nib
 
+# Test de pe laptop
 
 class LiverDataset(Dataset):
     """Liver segmentation dataset."""
