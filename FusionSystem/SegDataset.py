@@ -20,11 +20,11 @@ class SegDataset(Dataset):
         return len(self.mask_files)
 
     def __getitem__(self, idx):
-        seg_stack = np.zeros((len(self.model_list), 512, 512))
+        seg_stack = np.zeros((len(self.model_list), 256, 256))
         stack = 0
         for model in self.model_list:
             print(model)
-            seg_stack[stack, :, :] = np.fromfile(self.segmentations[model][idx], bool).squeeze().reshape([512, 512]).astype(np.float32)
+            seg_stack[stack, :, :] = np.fromfile(self.segmentations[model][idx], bool).squeeze().reshape([256, 256]).astype(np.float32)
             stack = stack + 1
         seg_stack = torch.tensor(seg_stack)
 
@@ -32,7 +32,7 @@ class SegDataset(Dataset):
         label = np.fromfile(mask_path, np.float16)
         label = np.squeeze(label)
         label[label > 1.0] = 1.0
-        label = np.array(label).reshape([512, 512]).astype(np.float32)
+        label = np.array(label).reshape([256, 256]).astype(np.float32)
         label = torch.squeeze(torch.tensor(label))
 
         return seg_stack, label
