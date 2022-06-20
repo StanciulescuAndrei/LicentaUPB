@@ -38,9 +38,14 @@ class FusionNetwork(nn.Module):
 
 
     def forward(self, x):
-        resnet_output = self.resnet(x).squeeze()
-        resnext_output = self.resnext(x).squeeze()
-        densenet_output = self.densenet(x).squeeze()
-        inception_output = self.inception(x).squeeze()
-        fusion_input = torch.stack([densenet_output, inception_output, resnet_output, resnext_output], dim=1)
-        return self.fusion(fusion_input)
+        sigmoid = nn.Sigmoid()
+
+        resnet_output =    torch.round(sigmoid(self.resnet(x)))
+        resnext_output =   torch.round(sigmoid(self.resnext(x)))
+        densenet_output =  torch.round(sigmoid(self.densenet(x)))
+        inception_output = torch.round(sigmoid(self.inception(x)))
+
+        fusion_input = torch.stack([densenet_output, inception_output, resnet_output, resnext_output], dim=1).squeeze(2)
+        out = sigmoid(self.fusion(fusion_input))
+
+        return out

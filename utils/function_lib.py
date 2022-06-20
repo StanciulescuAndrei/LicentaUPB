@@ -86,14 +86,13 @@ def show_cpu(imgs):
 def show_model_seg(model, dataset, idx):
     model.eval()
     input_tensor, mask = dataset.__getitem__(idx)
-    input_batch = input_tensor.repeat(2, 1, 1, 1)
-    # input_batch = input_tensor
-    pred = model(input_batch)
+    input_batch = input_tensor.unsqueeze(0)  # .repeat(2, 1, 1, 1)
 
-    final_func = nn.Sigmoid()
-    pred = final_func(pred).squeeze()
-    pred = torch.nn.functional.interpolate(pred.unsqueeze(0), size=512, mode="bilinear", align_corners=False).squeeze()
-    output_predictions = torch.round(pred[0])
+    pred = model(input_batch)
+    print(pred.size())
+
+    pred = torch.nn.functional.interpolate(pred, size=512, mode="bilinear", align_corners=False).squeeze()
+    output_predictions = torch.round(pred)
 
     print(output_predictions.shape)
     output_predictions = output_predictions.detach().squeeze()
