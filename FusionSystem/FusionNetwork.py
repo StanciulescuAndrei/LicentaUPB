@@ -11,9 +11,10 @@ from FusionSystem.FusionSystem import FusionSystem
 
 
 class FusionNetwork(nn.Module):
-    def __init__(self, path):
+    def __init__(self, path, threshold=0.5):
         super(FusionNetwork, self).__init__()
         self.model_list = ['DenseNet201', 'Inception', 'ResNet152', 'ResNeXt101']
+        self.threshold = threshold
 
         # ResNet152
         self.resnet = ResNet152DeepLab()
@@ -40,10 +41,21 @@ class FusionNetwork(nn.Module):
     def forward(self, x):
         sigmoid = nn.Sigmoid()
 
-        resnet_output =    torch.round(sigmoid(self.resnet(x)))
-        resnext_output =   torch.round(sigmoid(self.resnext(x)))
-        densenet_output =  torch.round(sigmoid(self.densenet(x)))
-        inception_output = torch.round(sigmoid(self.inception(x)))
+        resnet_output = sigmoid(self.resnet(x))
+        resnet_output[resnet_output >= self.threshold] = 1
+        resnet_output[resnet_output < self.threshold] = 0
+
+        resnext_output = sigmoid(self.resnext(x))
+        resnext_output[resnext_output >= self.threshold] = 1
+        resnext_output[resnext_output < self.threshold] = 0
+
+        densenet_output = sigmoid(self.densenet(x))
+        densenet_output[densenet_output >= self.threshold] = 1
+        densenet_output[densenet_output < self.threshold] = 0
+
+        inception_output = sigmoid(self.inception(x))
+        inception_output[inception_output >= self.threshold] = 1
+        inception_output[inception_output < self.threshold] = 0
 
         fusion_input = torch.stack([densenet_output, inception_output, resnet_output, resnext_output], dim=1).squeeze(2)
         out = sigmoid(self.fusion(fusion_input))
